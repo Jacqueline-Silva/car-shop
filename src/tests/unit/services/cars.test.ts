@@ -4,7 +4,7 @@ import { ZodError } from 'zod';
 import { ErrorTypes } from '../../../errors/catalog';
 import CarsModel from '../../../models/CarsModel';
 import CarsService from '../../../services/Cars';
-import { carsMock, carsMockWithID, idCarsMock } from '../../mocks/carsMock';
+import { carsMock, carsMockWithID, idCarsMock, newCarsMock, newCarsMockWithID } from '../../mocks/carsMock';
 
 describe('Cars Service', () => {
 	const carsModel = new CarsModel();
@@ -14,8 +14,15 @@ describe('Cars Service', () => {
 		sinon.stub(carsModel, 'create').resolves(carsMockWithID);
 		sinon.stub(carsModel, 'read').resolves([carsMockWithID]);
     sinon.stub(carsModel, 'readOne')
-		.onCall(0).resolves(carsMockWithID)
-		.onCall(1).resolves(null);
+			.onCall(0).resolves(carsMockWithID)
+			.onCall(1).resolves(null)
+			.onCall(2).resolves(newCarsMockWithID);
+		sinon.stub(carsModel, 'update')
+			.onCall(0).resolves(newCarsMockWithID)
+			.onCall(1).resolves(null);
+		sinon.stub(carsModel, 'delete')
+			.onCall(0).resolves(carsMockWithID)
+			.onCall(1).resolves(null);
   });
 
 	after(() => {
@@ -62,4 +69,44 @@ describe('Cars Service', () => {
 		});
 	});
 
+	describe('Verifica se o método "update"', () => {
+		it('Retorna com sucesso o carro atualizado', async () => {
+			await carsService.readOne(idCarsMock);
+			const updateCar = await carsService.update(idCarsMock, newCarsMock);
+
+			expect(updateCar).to.be.deep.equal(newCarsMockWithID);
+		});
+
+		it('Lança um erro ao não passar os dados corretos', async () => {
+			try {
+				await carsService.update(idCarsMock, {} as any);
+			} catch (error) {
+				expect(error).to.be.instanceOf(ZodError);
+			}
+		});
+
+		it('Retorna um erro ao não encontrar o carro pelo id', async () => {
+			try {
+				await carsService.update('idIncorrect', newCarsMock);
+			} catch (error:any) {
+				expect(error.message).to.be.deep.equal(ErrorTypes.EntityNotFound);
+			}
+		});
+	});
+
+	describe('Verifica se o método "delete"', () => {
+		it('Retorna com sucesso o carro deletado', async () => {
+			const deleteCar = await carsService.delete(idCarsMock);
+
+			expect(deleteCar).to.be.deep.equal(carsMockWithID);
+		});
+
+		it('Retorna um erro ao não encontrar o carro pelo id', async () => {
+			try {
+				await carsService.delete('idIncorrect');
+			} catch (error:any) {
+				expect(error.message).to.be.deep.equal(ErrorTypes.EntityNotFound);
+			}
+		});
+	});
 });
