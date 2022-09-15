@@ -21,4 +21,11 @@ export default class MotorcyclesController {
     const motorcycleID = await this._service.readOne(id);
     return res.status(200).json(motorcycleID);
   }
+
+  public async update(req: Request & { body: IMotorcycle }, res: Response<IMotorcycle>) {
+    const { id } = req.params;
+    const data = req.body;
+    const updateMotorcycle = await this._service.update(id, data);
+    return res.status(200).json(updateMotorcycle);
+  }
 }
