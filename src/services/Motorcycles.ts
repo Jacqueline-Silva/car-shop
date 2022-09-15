@@ -38,4 +38,10 @@ export default class MotorcyclesService implements IService<IMotorcycle> {
     if (!upMotorcycle) throw new Error(ErrorTypes.EntityNotFound);
     return upMotorcycle;
   }
+
+  public async delete(id:string):Promise<IMotorcycle> {
+    const motorcycle = await this._motorcycle.delete(id);
+    if (!motorcycle) throw new Error(ErrorTypes.EntityNotFound);
+    return motorcycle;
+  }
 }
