@@ -17,4 +17,6 @@ carRoute.get('/:id', (req, res) => carController.readOne(req, res));
 
 carRoute.put('/:id', (req, res) => carController.update(req, res));
 
+carRoute.delete('/:id', (req, res) => carController.delete(req, res));
+
 export default carRoute;
