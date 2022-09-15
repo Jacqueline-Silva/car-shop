@@ -28,4 +28,10 @@ export default class MotorcyclesController {
     const updateMotorcycle = await this._service.update(id, data);
     return res.status(200).json(updateMotorcycle);
   }
+
+  public async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    await this._service.delete(id);
+    return res.sendStatus(204);
+  }
 }
