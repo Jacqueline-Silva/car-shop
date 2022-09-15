@@ -28,4 +28,14 @@ export default class MotorcyclesService implements IService<IMotorcycle> {
     if (!motorcycleID) throw new Error(ErrorTypes.EntityNotFound);
     return motorcycleID;
   }
+
+  public async update(id: string, obj: IMotorcycle):Promise<IMotorcycle> {
+    const parsed = motorcycleZodSchema.safeParse(obj);
+    if (!parsed.success) {
+      throw parsed.error;
+    }
+    const upMotorcycle = await this._motorcycle.update(id, obj);
+    if (!upMotorcycle) throw new Error(ErrorTypes.EntityNotFound);
+    return upMotorcycle;
+  }
 }
