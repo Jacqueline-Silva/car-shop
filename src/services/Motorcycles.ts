@@ -1,6 +1,7 @@
 import IService from '../interfaces/IService';
 import { IModel } from '../interfaces/IModel';
 import { IMotorcycle, motorcycleZodSchema } from '../interfaces/IMotorcycle';
+import { ErrorTypes } from '../errors/catalog';
 
 export default class MotorcyclesService implements IService<IMotorcycle> {
   private _motorcycle:IModel<IMotorcycle>;
@@ -15,5 +16,16 @@ export default class MotorcyclesService implements IService<IMotorcycle> {
       throw parsed.error;
     }
     return this._motorcycle.create(obj);
+  }
+
+  public async read():Promise<IMotorcycle[]> {
+    const motorcycles = await this._motorcycle.read();
+    return motorcycles;
+  }
+
+  public async readOne(id:string):Promise<IMotorcycle> {
+    const motorcycleID = await this._motorcycle.readOne(id);
+    if (!motorcycleID) throw new Error(ErrorTypes.EntityNotFound);
+    return motorcycleID;
   }
 }
