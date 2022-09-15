@@ -17,22 +17,22 @@ abstract class MongoModel<T> implements IModel<T> {
     return this._model.find();
   }
 
-  public async readOne(id:string):Promise<T | null> {
-    if (!isValidObjectId(id)) throw Error(ErrorTypes.InvalidMongoId);
-    return this._model.findOne({ id });
+  public async readOne(_id:string):Promise<T | null> {
+    if (!isValidObjectId(_id)) throw Error(ErrorTypes.InvalidMongoId);
+    return this._model.findOne({ _id });
   }
 
-  public async update(id:string, obj:T): Promise<T | null> {
-    if (!isValidObjectId(id)) throw Error(ErrorTypes.InvalidMongoId);
+  public async update(_id:string, obj:T): Promise<T | null> {
+    if (!isValidObjectId(_id)) throw Error(ErrorTypes.InvalidMongoId);
     return this._model.findByIdAndUpdate(
-      { id },
+      { _id },
       { ...obj } as UpdateQuery<T>,
     );
   }
 
-  public async delete(id: string): Promise<T | null> {
-    if (!isValidObjectId(id)) throw Error(ErrorTypes.InvalidMongoId);
-    return this._model.findByIdAndDelete({ id });
+  public async delete(_id: string): Promise<T | null> {
+    if (!isValidObjectId(_id)) throw Error(ErrorTypes.InvalidMongoId);
+    return this._model.findByIdAndDelete({ _id });
   }
 }
 

@@ -10,10 +10,14 @@ const carsMongooseSchema = new Schema<ICar>({
   buyValue: Number,
   doorsQty: Number,
   seatsQty: Number,
-});
+}, { versionKey: false }); // Desabilitando o controle de versão
 
 export default class CarsModel extends MongoModel<ICar> {
   constructor(model = mongooseCreateModel('Cars', carsMongooseSchema)) {
     super(model);
   }
 }
+
+/**
+ * REF: https://mongoosejs.com/docs/guide.html#versionKey
+ */
