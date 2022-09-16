@@ -69,9 +69,9 @@ describe('Motorcycles Model', () => {
 
   describe('Verifica o método "delete"', () => {
     it('Sucesso ao deletar a motocicleta pelo ID', async () => {
-      const deleteCar = await motorscycleModel.delete(idMotorcyclesMock);
+      const deleteMotorcycle = await motorscycleModel.delete(idMotorcyclesMock);
 
-      expect(deleteCar).to.be.deep.equal(newMotorcyclesMockWithID);
+      expect(deleteMotorcycle).to.be.deep.equal(newMotorcyclesMockWithID);
     });
 
     it('Falha ao deletar a motocicleta pelo ID', async () => {
